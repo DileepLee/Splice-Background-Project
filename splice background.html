@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="C:\Users\HP\OneDrive\Desktop\Splice BAckground\splicebackground.css">    
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" id="searchInput" class="form-control" placeholder="Type a bike name and press Enter to search" onkeypress="searchField(this)"/>
+                </div>
+            </div>
+            <div class="spinner spinner-border" role="status" id="spinner"></div>
+            <div class="content" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            searchField();
+        });
+
+
+        let spinner = document.getElementById('spinner');
+        let content = document.getElementById('searchResults');
+
+
+        function searchField(input = '') {
+            let val = input != '' ? input.value : '';
+
+
+            content.classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+
+            if (input == '' || event.keyCode == 13) {
+                let request = fetch(`https://apis.ccbp.in/city-bikes?bike_name=${val}`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    let res = '';
+
+
+                    data.map(item => {
+                        res += `
+                            <div class="item">
+                                <p class="title">Bike name: ${item.name}</p>   
+                                <p class="desc">City: ${item.city}</p> 
+                            </div>
+                        `;
+                    })
+
+
+                    spinner.classList.add('hidden');
+                    content.innerHTML = res;
+                    content.classList.remove('hidden');
+                });
+            }
+
+
+        }
+    </script>
+
+</body>
+</html>
